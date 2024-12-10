@@ -1,0 +1,38 @@
+// Add these models to your existing schema.prisma file
+
+model AdoptionFair {
+  id          String    @id @default(uuid())
+  ongId       String
+  name        String
+  date        DateTime
+  time        String
+  location    String
+  address     String
+  description String
+  imageUrl    String
+  status      String    @default("PENDING")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  ong         User      @relation(fields: [ongId], references: [id])
+  animals     Animal[]
+}
+
+model Animal {
+  id            String      @id @default(uuid())
+  fairId        String
+  name          String
+  type          String
+  breed         String
+  age           String
+  description   String
+  imageUrl      String
+  adoptionFair  AdoptionFair @relation(fields: [fairId], references: [id])
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+// Update the User model to include the relation
+model User {
+  // ... existing fields ...
+  adoptionFairs AdoptionFair[]
+}
